@@ -26,12 +26,12 @@ pub trait ComponentAccess<P: ProtocolType>: Send + Sync {
     );
 }
 
-pub struct ComponentAccessor<P: ProtocolType, R: ReplicateSafe<P>> {
+pub struct ComponentAccessor<P: ProtocolType, R: ReplicateSafe<P>  + bevy::prelude::Component> {
     phantom_p: PhantomData<P>,
     phantom_r: PhantomData<R>,
 }
 
-impl<P: 'static + ProtocolType, R: ReplicateSafe<P>> ComponentAccessor<P, R> {
+impl<P: 'static + ProtocolType, R: ReplicateSafe<P> + bevy::prelude::Component> ComponentAccessor<P, R> {
     pub fn new() -> Box<dyn Any> {
         let inner_box: Box<dyn ComponentAccess<P>> = Box::new(ComponentAccessor {
             phantom_p: PhantomData::<P>,
@@ -41,7 +41,7 @@ impl<P: 'static + ProtocolType, R: ReplicateSafe<P>> ComponentAccessor<P, R> {
     }
 }
 
-impl<P: ProtocolType, R: ReplicateSafe<P>> ComponentAccess<P> for ComponentAccessor<P, R> {
+impl<P: ProtocolType, R: ReplicateSafe<P> + bevy::prelude::Component> ComponentAccess<P> for ComponentAccessor<P, R> {
     fn get_component<'w>(
         &self,
         world: &'w World,

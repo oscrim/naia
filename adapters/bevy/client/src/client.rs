@@ -13,17 +13,17 @@ use naia_bevy_shared::{WorldProxy, WorldRef};
 use super::state::State;
 
 // Client
-
-pub struct Client<'a, P: ProtocolType> {
-    world: &'a World,
-    client: Mut<'a, NaiaClient<P, Entity>>,
+#[derive(SystemParam)]
+pub struct Client<'w, 's, P: ProtocolType> {
+    world: &'w World,
+    client: Mut<'w, NaiaClient<P, Entity>>,
     phantom_p: PhantomData<P>,
 }
 
-impl<'a, P: ProtocolType> Client<'a, P> {
+impl<'w, 's, P: ProtocolType> Client<'w, 's, P> {
     // Public Methods //
 
-    pub fn new(world: &'a World) -> Self {
+    pub fn new(world: &'w World) -> Self {
         unsafe {
             let client = world
                 .get_resource_unchecked_mut::<NaiaClient<P, Entity>>()
@@ -89,8 +89,4 @@ impl<'a, P: ProtocolType> Client<'a, P> {
     pub fn server_tick(&self) -> Option<u16> {
         return self.client.server_tick();
     }
-}
-
-impl<'a, P: ProtocolType> SystemParam for Client<'a, P> {
-    type Fetch = State<P>;
 }

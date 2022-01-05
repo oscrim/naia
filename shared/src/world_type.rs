@@ -19,11 +19,11 @@ pub trait WorldRefType<P: ProtocolType, E> {
 
     // Components
     /// check whether entity contains component
-    fn has_component<R: ReplicateSafe<P>>(&self, entity: &E) -> bool;
+    fn has_component<R: ReplicateSafe<P> + bevy::prelude::Component>(&self, entity: &E) -> bool;
     /// check whether entity contains component, dynamically
     fn has_component_of_kind(&self, entity: &E, component_kind: &P::Kind) -> bool;
     /// gets an entity's component
-    fn get_component<'a, R: ReplicateSafe<P>>(
+    fn get_component<'a, R: ReplicateSafe<P> + bevy::prelude::Component>(
         &'a self,
         entity: &E,
     ) -> Option<ReplicaRefWrapper<'a, P, R>>;
@@ -49,7 +49,7 @@ pub trait WorldMutType<P: ProtocolType, E>: WorldRefType<P, E> + ProtocolInserte
     /// gets all of an Entity's Components as a list of Kinds
     fn get_component_kinds(&mut self, entity: &E) -> Vec<P::Kind>;
     /// gets an entity's component
-    fn get_component_mut<'a, R: ReplicateSafe<P>>(
+    fn get_component_mut<'a, R: ReplicateSafe<P> + bevy::prelude::Component>(
         &'a mut self,
         entity: &E,
     ) -> Option<ReplicaMutWrapper<'a, P, R>>;
@@ -71,9 +71,9 @@ pub trait WorldMutType<P: ProtocolType, E>: WorldRefType<P, E> + ProtocolInserte
         component_kind: &P::Kind,
     );
     /// insert a component
-    fn insert_component<R: ReplicateSafe<P>>(&mut self, entity: &E, component_ref: R);
+    fn insert_component<R: ReplicateSafe<P> + bevy::prelude::Component>(&mut self, entity: &E, component_ref: R);
     /// remove a component
-    fn remove_component<R: Replicate<P>>(&mut self, entity: &E) -> Option<R>;
+    fn remove_component<R: Replicate<P> + bevy::prelude::Component>(&mut self, entity: &E) -> Option<R>;
     /// remove a component by kind
     fn remove_component_of_kind(&mut self, entity: &E, component_kind: &P::Kind) -> Option<P>;
 }

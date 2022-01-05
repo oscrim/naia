@@ -58,7 +58,7 @@ impl<'w, P: 'static + ProtocolType> WorldRefType<P, Entity> for WorldRef<'w> {
         return entities::<P>(self.world);
     }
 
-    fn has_component<R: ReplicateSafe<P>>(&self, entity: &Entity) -> bool {
+    fn has_component<R: ReplicateSafe<P> + bevy::prelude::Component>(&self, entity: &Entity) -> bool {
         return has_component::<P, R>(self.world, entity);
     }
 
@@ -66,7 +66,7 @@ impl<'w, P: 'static + ProtocolType> WorldRefType<P, Entity> for WorldRef<'w> {
         return has_component_of_kind::<P>(self.world, entity, component_kind);
     }
 
-    fn get_component<R: ReplicateSafe<P>>(
+    fn get_component<R: ReplicateSafe<P> + bevy::prelude::Component>(
         &self,
         entity: &Entity,
     ) -> Option<ReplicaRefWrapper<P, R>> {
@@ -103,7 +103,7 @@ impl<'w, P: 'static + ProtocolType> WorldRefType<P, Entity> for WorldMut<'w> {
         return entities::<P>(self.world);
     }
 
-    fn has_component<R: ReplicateSafe<P>>(&self, entity: &Entity) -> bool {
+    fn has_component<R: ReplicateSafe<P> + bevy::prelude::Component>(&self, entity: &Entity) -> bool {
         return has_component::<P, R>(self.world, entity);
     }
 
@@ -111,7 +111,7 @@ impl<'w, P: 'static + ProtocolType> WorldRefType<P, Entity> for WorldMut<'w> {
         return has_component_of_kind::<P>(self.world, entity, component_kind);
     }
 
-    fn get_component<R: ReplicateSafe<P>>(
+    fn get_component<R: ReplicateSafe<P> + bevy::prelude::Component>(
         &self,
         entity: &Entity,
     ) -> Option<ReplicaRefWrapper<P, R>> {
@@ -128,7 +128,7 @@ impl<'w, P: 'static + ProtocolType> WorldRefType<P, Entity> for WorldMut<'w> {
 }
 
 impl<'w, P: 'static + ProtocolType> WorldMutType<P, Entity> for WorldMut<'w> {
-    fn get_component_mut<R: ReplicateSafe<P>>(
+    fn get_component_mut<R: ReplicateSafe<P> + bevy::prelude::Component>(
         &mut self,
         entity: &Entity,
     ) -> Option<ReplicaMutWrapper<P, R>> {
@@ -207,7 +207,7 @@ impl<'w, P: 'static + ProtocolType> WorldMutType<P, Entity> for WorldMut<'w> {
         return kinds;
     }
 
-    fn insert_component<I: ReplicateSafe<P>>(&mut self, entity: &Entity, component_ref: I) {
+    fn insert_component<I: ReplicateSafe<P> + bevy::prelude::Component>(&mut self, entity: &Entity, component_ref: I) {
         // cache type id for later
         // todo: can we initialize this map on startup via Protocol derive?
         let mut world_data = get_world_data_unchecked_mut(&self.world);
@@ -220,7 +220,7 @@ impl<'w, P: 'static + ProtocolType> WorldMutType<P, Entity> for WorldMut<'w> {
         self.world.entity_mut(*entity).insert(component_ref);
     }
 
-    fn remove_component<R: ReplicateSafe<P>>(&mut self, entity: &Entity) -> Option<R> {
+    fn remove_component<R: ReplicateSafe<P> + bevy::prelude::Component>(&mut self, entity: &Entity) -> Option<R> {
         return self.world.entity_mut(*entity).remove::<R>();
     }
 
@@ -237,7 +237,7 @@ impl<'w, P: 'static + ProtocolType> WorldMutType<P, Entity> for WorldMut<'w> {
 }
 
 impl<'w, P: ProtocolType> ProtocolInserter<P, Entity> for WorldMut<'w> {
-    fn insert<I: ReplicateSafe<P>>(&mut self, entity: &Entity, impl_ref: I) {
+    fn insert<I: ReplicateSafe<P> + bevy::prelude::Component>(&mut self, entity: &Entity, impl_ref: I) {
         self.insert_component::<I>(entity, impl_ref);
     }
 }
@@ -253,7 +253,7 @@ fn entities<P: ProtocolType>(world: &World) -> Vec<Entity> {
     return world_data.get_entities();
 }
 
-fn has_component<P: ProtocolType, R: ReplicateSafe<P>>(world: &World, entity: &Entity) -> bool {
+fn has_component<P: ProtocolType, R: ReplicateSafe<P> + bevy::prelude::Component>(world: &World, entity: &Entity) -> bool {
     return world.get::<R>(*entity).is_some();
 }
 
@@ -267,7 +267,7 @@ fn has_component_of_kind<P: ProtocolType>(
         .contains_type_id(component_kind.to_type_id());
 }
 
-fn get_component<'a, P: ProtocolType, R: ReplicateSafe<P>>(
+fn get_component<'a, P: ProtocolType, R: ReplicateSafe<P> + bevy::prelude::Component>(
     world: &'a World,
     entity: &Entity,
 ) -> Option<ReplicaRefWrapper<'a, P, R>> {

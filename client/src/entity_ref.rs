@@ -24,11 +24,11 @@ impl<'s, P: ProtocolType, E: Copy + Eq + Hash, W: WorldRefType<P, E>> EntityRef<
         self.id
     }
 
-    pub fn has_component<R: ReplicateSafe<P>>(&self) -> bool {
+    pub fn has_component<R: ReplicateSafe<P> + bevy::prelude::Component>(&self) -> bool {
         return self.world.has_component::<R>(&self.id);
     }
 
-    pub fn component<R: ReplicateSafe<P>>(&self) -> Option<ReplicaRefWrapper<P, R>> {
+    pub fn component<R: ReplicateSafe<P> + bevy::prelude::Component>(&self) -> Option<ReplicaRefWrapper<P, R>> {
         return self.world.get_component::<R>(&self.id);
     }
 
@@ -64,11 +64,11 @@ impl<P: ProtocolType, E: Copy, W: WorldRefType<P, E>> PredictedEntityRef<P, E, W
         self.id
     }
 
-    pub fn has_component<R: ReplicateSafe<P>>(&self) -> bool {
+    pub fn has_component<R: ReplicateSafe<P> + bevy::prelude::Component>(&self) -> bool {
         return self.world.has_component::<R>(&self.id);
     }
 
-    pub fn component<R: ReplicateSafe<P>>(&self) -> Option<ReplicaRefWrapper<P, R>> {
+    pub fn component<R: ReplicateSafe<P> + bevy::prelude::Component>(&self) -> Option<ReplicaRefWrapper<P, R>> {
         return self.world.get_component::<R>(&self.id);
     }
 }

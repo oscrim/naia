@@ -8,6 +8,7 @@ use bevy::ecs::{
 use naia_client::ProtocolType;
 
 use super::client::Client;
+use bevy::ecs::system::SystemMeta;
 
 // State
 
@@ -19,7 +20,7 @@ pub struct State<P: ProtocolType> {
 unsafe impl<P: ProtocolType> SystemParamState for State<P> {
     type Config = ();
 
-    fn init(_world: &mut World, _system_state: &mut SystemState, _config: Self::Config) -> Self {
+    fn init(_world: &mut World, _system_state: &mut SystemMeta, _config: Self::Config) -> Self {
         State {
             phantom_p: PhantomData,
         }
@@ -30,14 +31,14 @@ unsafe impl<P: ProtocolType> SystemParamState for State<P> {
     fn default_config() {}
 }
 
-impl<'a, P: ProtocolType> SystemParamFetch<'a> for State<P> {
-    type Item = Client<'a, P>;
+impl<'w, 's, P: ProtocolType> SystemParamFetch<'w, 's> for State<P> {
+    type Item = Client<'w, 's, P>;
 
     #[inline]
     unsafe fn get_param(
-        _state: &'a mut Self,
-        _system_state: &'a SystemState,
-        world: &'a World,
+        _state: &'s mut Self,
+        _system_state: & SystemMeta,
+        world: &'w  World,
         _change_tick: u32,
     ) -> Self::Item {
         Client::new(world)

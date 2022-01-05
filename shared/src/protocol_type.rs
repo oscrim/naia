@@ -40,5 +40,5 @@ pub trait ProtocolKindType: Eq + Hash + Copy + Send + Sync {
 }
 
 pub trait ProtocolInserter<P: ProtocolType, N> {
-    fn insert<R: ReplicateSafe<P>>(&mut self, entity: &N, component: R);
+    fn insert<R: ReplicateSafe<P> + bevy::prelude::Component>(&mut self, entity: &N, component: R);
 }

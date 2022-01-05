@@ -59,7 +59,7 @@ impl<P: ProtocolType> WorldData<P> {
         return self.kind_to_accessor_map.contains_key(component_kind);
     }
 
-    pub(crate) fn put_kind<R: ReplicateSafe<P>>(&mut self, component_kind: &P::Kind) {
+    pub(crate) fn put_kind<R: ReplicateSafe<P> + bevy::prelude::Component>(&mut self, component_kind: &P::Kind) {
         self.kind_to_accessor_map
             .insert(*component_kind, ComponentAccessor::<P, R>::new());
     }
