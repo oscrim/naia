@@ -26,7 +26,7 @@ pub trait ComponentAccess<P: ProtocolType>: Send + Sync {
     );
 }
 
-pub struct ComponentAccessor<P: ProtocolType, R: ReplicateSafe<P>  + bevy::prelude::Component> {
+pub struct ComponentAccessor<P: ProtocolType, R: ReplicateSafe<P>  + bevy::prelude::Component> { 
     phantom_p: PhantomData<P>,
     phantom_r: PhantomData<R>,
 }
