@@ -375,7 +375,7 @@ pub fn get_new_complete_method(
             #field_name: #field_type
         };
         let new_output_result = quote! {
-            #args#new_output_right,
+            #args #new_output_right,
         };
         args = new_output_result;
     }
