@@ -11,13 +11,15 @@ use naia_client::{Client as NaiaClient, EntityRef, ProtocolType, Replicate};
 use naia_bevy_shared::{WorldProxy, WorldRef};
 
 use super::state::State;
+use bevy::ecs::prelude::ResMut;
 
 // Client
 #[derive(SystemParam)]
 pub struct Client<'w, 's, P: ProtocolType> {
     world: &'w World,
-    client: Mut<'w, NaiaClient<P, Entity>>,
-    phantom_p: PhantomData<P>,
+    client: Option<Mut<'w, NaiaClient<P, Entity>>>,
+    #[system_param(ignore)]
+    phantom_p: PhantomData<&'s P>,
 }
 
 impl<'w, 's, P: ProtocolType> Client<'w, 's, P> {
@@ -31,7 +33,7 @@ impl<'w, 's, P: ProtocolType> Client<'w, 's, P> {
 
             Self {
                 world,
-                client,
+                client: Some(client),
                 phantom_p: PhantomData,
             }
         }

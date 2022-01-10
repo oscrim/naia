@@ -12,9 +12,9 @@ members = [
     "adapters/bevy/shared",
     ]
 
-[patch.crates-io]
-bevy = {git = "https://github.com/oscrim/bevy.git", branch = "0.5.0-wgpu-fix"}
-bevy_app = {git = "https://github.com/oscrim/bevy.git", branch = "0.5.0-wgpu-fix"}
-bevy_core = {git = "https://github.com/oscrim/bevy.git", branch = "0.5.0-wgpu-fix"}
-bevy_ecs = {git = "https://github.com/oscrim/bevy.git", branch = "0.5.0-wgpu-fix"}
-bevy_tasks = {git = "https://github.com/oscrim/bevy.git", branch = "0.5.0-wgpu-fix"}
+#[patch.crates-io]
+#bevy = {git = "https://github.com/oscrim/bevy.git", branch = "0.5.0-wgpu-fix"}
+#bevy_app = {git = "https://github.com/oscrim/bevy.git", branch = "0.5.0-wgpu-fix"}
+#bevy_core = {git = "https://github.com/oscrim/bevy.git", branch = "0.5.0-wgpu-fix"}
+#bevy_ecs = {git = "https://github.com/oscrim/bevy.git", branch = "0.5.0-wgpu-fix"}
+#bevy_tasks = {git = "https://github.com/oscrim/bevy.git", branch = "0.5.0-wgpu-fix"}

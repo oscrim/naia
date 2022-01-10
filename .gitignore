@@ -21,3 +21,4 @@ node_modules
 /demos/bevy/client/target
 /demos/bevy/client/target/
 /demos/bevy/client/target/*
+naia.iml
