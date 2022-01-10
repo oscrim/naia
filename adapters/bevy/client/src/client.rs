@@ -17,7 +17,7 @@ use bevy::ecs::prelude::{ResMut, Component};
 #[derive(Component)]
 pub struct Client<'w, 's, P: ProtocolType> {
     world: &'w World,
-    client: Option<Mut<'w, NaiaClient<P, Entity>>>,
+    client: Mut<'w, NaiaClient<P, Entity>>,
     phantom_p: PhantomData<&'s P>,
 }
 
@@ -32,7 +32,7 @@ impl<'w, 's, P: ProtocolType> Client<'w, 's, P> {
 
             Self {
                 world,
-                client: Some(client),
+                client,
                 phantom_p: PhantomData,
             }
         }
