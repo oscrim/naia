@@ -17,17 +17,17 @@ use super::{commands::Command, entity_mut::EntityMut, state::State};
 
 // Server
 
-pub struct Server<'a, P: ProtocolType> {
-    state: &'a mut State<P>,
-    world: &'a World,
-    server: Mut<'a, NaiaServer<P, Entity>>,
+pub struct Server<'w, 's, P: ProtocolType> {
+    state: &'s mut State<P>,
+    world: &'w World,
+    server: Mut<'w, NaiaServer<P, Entity>>,
     phantom_p: PhantomData<P>,
 }
 
-impl<'a, P: ProtocolType> Server<'a, P> {
+impl<'w, 's, P: ProtocolType> Server<'w, 's, P> {
     // Public Methods //
 
-    pub fn new(state: &'a mut State<P>, world: &'a World) -> Self {
+    pub fn new(state: &'s mut State<P>, world: &'w World) -> Self {
         unsafe {
             let server = world
                 .get_resource_unchecked_mut::<NaiaServer<P, Entity>>()
@@ -57,7 +57,7 @@ impl<'a, P: ProtocolType> Server<'a, P> {
     }
 
     //// Messages ////
-    pub fn send_message<R: Replicate<P>>(
+    pub fn send_message<R: Replicate<P> + bevy::prelude::Component>(
         &mut self,
         user_key: &UserKey,
         message_ref: &R,
@@ -80,7 +80,7 @@ impl<'a, P: ProtocolType> Server<'a, P> {
 
     //// Entities ////
 
-    pub fn spawn(&mut self) -> EntityMut<'a, '_, P> {
+    pub fn spawn(&'s mut self) -> EntityMut<'w, 's, P> {
         let entity = self.world.entities().reserve_entity();
         self.server.spawn_entity_at(&entity);
         EntityMut::new(entity, self)
@@ -90,7 +90,7 @@ impl<'a, P: ProtocolType> Server<'a, P> {
         return self.server.entity(self.world.proxy(), entity);
     }
 
-    pub fn entity_mut(&mut self, entity: &Entity) -> EntityMut<'a, '_, P> {
+    pub fn entity_mut(&'s mut self, entity: &Entity) -> EntityMut<'w, 's, P> {
         EntityMut::new(*entity, self)
     }
 
@@ -189,6 +189,6 @@ impl<'a, P: ProtocolType> Server<'a, P> {
     // Private methods
 }
 
-impl<'a, P: ProtocolType> SystemParam for Server<'a, P> {
+impl<'w, 's, P: ProtocolType> SystemParam for Server<'w, 's, P> {
     type Fetch = State<P>;
 }

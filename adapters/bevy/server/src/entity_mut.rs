@@ -11,11 +11,11 @@ use super::{
 
 pub struct EntityMut<'a, 'b, P: ProtocolType> {
     entity: Entity,
-    server: &'b mut Server<'a, P>,
+    server: &'b mut Server<'a, 'a, P>,
 }
 
 impl<'a, 'b, P: ProtocolType> EntityMut<'a, 'b, P> {
-    pub fn new(entity: Entity, server: &'b mut Server<'a, P>) -> Self {
+    pub fn new(entity: Entity, server: &'b mut Server<'a, 'a, P>) -> Self {
         return EntityMut { entity, server };
     }
 
@@ -32,13 +32,13 @@ impl<'a, 'b, P: ProtocolType> EntityMut<'a, 'b, P> {
 
     // Components
 
-    pub fn insert<R: Replicate<P>>(&mut self, component: R) -> &mut Self {
+    pub fn insert<R: Replicate<P> + bevy::prelude::Component>(&mut self, component: R) -> &mut Self {
         self.server
             .add(InsertComponent::new(&self.entity, component));
         self
     }
 
-    pub fn remove<R: Replicate<P>>(&mut self) -> &mut Self {
+    pub fn remove<R: Replicate<P> + bevy::prelude::Component>(&mut self) -> &mut Self {
         self.server.add(RemoveComponent::<P, R>::new(&self.entity));
         self
     }
@@ -72,7 +72,7 @@ impl<'a, 'b, P: ProtocolType> EntityMut<'a, 'b, P> {
 
     // Exit
 
-    pub fn server(&mut self) -> &mut Server<'a, P> {
+    pub fn server(&mut self) -> &mut Server<'a, 'a, P> {
         self.server
     }
 }
