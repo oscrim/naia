@@ -33,3 +33,5 @@ futures-util = { version = "0.3", features = ["sink"] }
 async-io = { version = "1.1" }
 futures-core = { version = "0.3" }
 cfg-if = "0.1.10"
+
+bevy = {version = "0.6", default-features=false}

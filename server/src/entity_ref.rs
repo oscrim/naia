@@ -34,12 +34,12 @@ impl<'s, P: ProtocolType, E: Copy + Eq + Hash, W: WorldRefType<P, E>> EntityRef<
     // Components
 
     /// Returns whether or not the Entity has an associated Component
-    pub fn has_component<R: ReplicateSafe<P>>(&self) -> bool {
+    pub fn has_component<R: ReplicateSafe<P> + bevy::prelude::Component>(&self) -> bool {
         return self.world.has_component::<R>(&self.id);
     }
 
     /// Gets a Ref to a Component associated with the Entity
-    pub fn component<R: ReplicateSafe<P>>(&self) -> Option<ReplicaRefWrapper<P, R>> {
+    pub fn component<R: ReplicateSafe<P> + bevy::prelude::Component>(&self) -> Option<ReplicaRefWrapper<P, R>> {
         return self.world.get_component::<R>(&self.id);
     }
 
@@ -82,22 +82,22 @@ impl<'s, P: ProtocolType, E: Copy + Eq + Hash, W: WorldMutType<P, E>> EntityMut<
 
     // Components
 
-    pub fn has_component<R: ReplicateSafe<P>>(&self) -> bool {
+    pub fn has_component<R: ReplicateSafe<P> + bevy::prelude::Component>(&self) -> bool {
         return self.world.has_component::<R>(&self.id);
     }
 
-    pub fn component<R: ReplicateSafe<P>>(&mut self) -> Option<ReplicaMutWrapper<P, R>> {
+    pub fn component<R: ReplicateSafe<P> + bevy::prelude::Component>(&mut self) -> Option<ReplicaMutWrapper<P, R>> {
         return self.world.get_component_mut::<R>(&self.id);
     }
 
-    pub fn insert_component<R: ReplicateSafe<P>>(&mut self, component_ref: R) -> &mut Self {
+    pub fn insert_component<R: ReplicateSafe<P> + bevy::prelude::Component>(&mut self, component_ref: R) -> &mut Self {
         self.server
             .insert_component(&mut self.world, &self.id, component_ref);
 
         self
     }
 
-    pub fn insert_components<R: ReplicateSafe<P>>(
+    pub fn insert_components<R: ReplicateSafe<P> + bevy::prelude::Component>(
         &mut self,
         mut component_refs: Vec<R>,
     ) -> &mut Self {
@@ -108,7 +108,7 @@ impl<'s, P: ProtocolType, E: Copy + Eq + Hash, W: WorldMutType<P, E>> EntityMut<
         self
     }
 
-    pub fn remove_component<R: Replicate<P>>(&mut self) -> Option<R> {
+    pub fn remove_component<R: Replicate<P> + bevy::prelude::Component>(&mut self) -> Option<R> {
         return self
             .server
             .remove_component::<R, W>(&mut self.world, &self.id);

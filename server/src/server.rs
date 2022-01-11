@@ -226,7 +226,7 @@ impl<P: ProtocolType, E: Copy + Eq + Hash> Server<P, E> {
 
     /// Queues up an Message to be sent to the Client associated with a given
     /// UserKey
-    pub fn send_message<R: ReplicateSafe<P>>(
+    pub fn send_message<R: ReplicateSafe<P> + bevy::prelude::Component>(
         &mut self,
         user_key: &UserKey,
         message: &R,
@@ -606,7 +606,7 @@ impl<P: ProtocolType, E: Copy + Eq + Hash> Server<P, E> {
     //// Components
 
     /// Adds a Component to an Entity
-    pub(crate) fn insert_component<R: ReplicateSafe<P>, W: WorldMutType<P, E>>(
+    pub(crate) fn insert_component<R: ReplicateSafe<P> + bevy::prelude::Component, W: WorldMutType<P, E>>(
         &mut self,
         world: &mut W,
         entity: &E,
@@ -641,7 +641,7 @@ impl<P: ProtocolType, E: Copy + Eq + Hash> Server<P, E> {
     }
 
     /// Removes a Component from an Entity
-    pub(crate) fn remove_component<R: Replicate<P>, W: WorldMutType<P, E>>(
+    pub(crate) fn remove_component<R: Replicate<P> + bevy::prelude::Component, W: WorldMutType<P, E>>(
         &mut self,
         world: &mut W,
         entity: &E,
@@ -1041,7 +1041,7 @@ impl<P: ProtocolType, E: Copy + Eq + Hash> Server<P, E> {
 
     // Component Helpers
 
-    fn component_init<R: ReplicateSafe<P>>(
+    fn component_init<R: ReplicateSafe<P> + bevy::prelude::Component>(
         &mut self,
         entity: &E,
         component_ref: &mut R,

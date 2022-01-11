@@ -50,7 +50,7 @@ impl<P: ProtocolType> State<P> {
 unsafe impl<P: ProtocolType> SystemParamState for State<P> {
     type Config = ();
 
-    fn init(_world: &mut World, _system_state: &mut SystemState, _config: Self::Config) -> Self {
+    fn init(_world: &mut World, _system_state: &mut SystemState<Param>, _config: Self::Config) -> Self {
         State {
             commands: Vec::new(),
             phantom_p: PhantomData,
@@ -70,7 +70,7 @@ impl<'a, P: ProtocolType> SystemParamFetch<'a> for State<P> {
     #[inline]
     unsafe fn get_param(
         state: &'a mut Self,
-        _system_state: &'a SystemState,
+        _system_state: &'a SystemState<Param>,
         world: &'a World,
         _change_tick: u32,
     ) -> Self::Item {
