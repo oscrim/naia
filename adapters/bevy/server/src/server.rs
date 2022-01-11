@@ -80,7 +80,7 @@ impl<'w, 's, P: ProtocolType> Server<'w, 's, P> {
 
     //// Entities ////
 
-    pub fn spawn(&'s mut self) -> EntityMut<'w, 's, P> {
+    pub fn spawn(&'w mut self) -> EntityMut<'w, 's, P> {
         let entity = self.world.entities().reserve_entity();
         self.server.spawn_entity_at(&entity);
         EntityMut::new(entity, self)
@@ -90,7 +90,7 @@ impl<'w, 's, P: ProtocolType> Server<'w, 's, P> {
         return self.server.entity(self.world.proxy(), entity);
     }
 
-    pub fn entity_mut(&'s mut self, entity: &Entity) -> EntityMut<'w, 's, P> {
+    pub fn entity_mut(&'w mut self, entity: &Entity) -> EntityMut<'w, 's, P> {
         EntityMut::new(*entity, self)
     }
 
