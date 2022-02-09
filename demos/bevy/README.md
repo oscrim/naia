@@ -1,0 +1,1 @@
+You must set the public webrtc address in server/src/systems/init.rs before running the make script

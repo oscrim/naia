@@ -5,7 +5,7 @@ use naia_shared::{LinkConditionerConfig, SharedConfig};
 use super::protocol::Protocol;
 
 pub fn get_server_address() -> SocketAddr {
-    return "127.0.0.1:14191"
+    return "0.0.0.0:14191"
         .parse()
         .expect("could not parse socket address from string");
 }

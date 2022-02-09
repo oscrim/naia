@@ -1,0 +1,7 @@
+version: '3'
+services:
+  believe:
+    image: naia-docker-example:latest
+    ports:
+      - "14191:14191"
+      - "14192:14192"
